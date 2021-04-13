@@ -12,13 +12,12 @@ import cv2
 
 
 minio_instance = Minio()
-config = Config()
 
 WINDOW_NAME = 'capture_camera'
-FPS = config.FPS
-DURATION = config.DURATION
-OUTPUT_EXTENSION = config.EXTENSION
-VIDEO_SIZE = config.VIDEO_SIZE
+FPS = Config.FPS
+DURATION = Config.DURATION
+OUTPUT_EXTENSION = Config.EXTENSION
+VIDEO_SIZE = Config.VIDEO_SIZE
 
 def parse_args():
     # Parse input arguments
