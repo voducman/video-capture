@@ -3,7 +3,7 @@
 
 class Config:
     VIDEO_SIZE = (1920,1080)
-    DURATION = 1 # in minutes
+    DURATION = 5 # in minutes
     FPS = 30
     EXTENSION = 'avi' # [avi, mp4]
     
@@ -15,3 +15,7 @@ class Config:
     MINIO_REGION_NAME = 'ap-southeast-1'
     MINIO_BUCKET = 'vinmart' 
     MINIO_FREFIX_PATH = 'uploads'
+
+    RTSP = [
+
+    ]

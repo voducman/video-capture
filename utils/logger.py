@@ -14,4 +14,10 @@ upload_logger.propagate = False
 upload_logger.setLevel(logging.DEBUG)
 upload_logger.addHandler(upload_handler)
 
+capture_handler = TimedRotatingFileHandler('logs/capture.log', when="W0", backupCount=8)
+capture_logger = logging.getLogger('capture')
+capture_logger.propagate = False
+capture_logger.setLevel(logging.DEBUG)
+capture_logger.addHandler(capture_handler)
+
 

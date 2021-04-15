@@ -61,6 +61,8 @@ class Minio:
         return self.put(buf.tobytes(), path)
 
     def upload_file(self, file_path, minio_path):
+        # TODO remove line below when run in production mode
+        # return True  
         try:
             self.s3_file.Bucket(MINIO_BUCKET).upload_file(file_path, minio_path)
             return True
