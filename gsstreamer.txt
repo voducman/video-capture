@@ -1,0 +1,107 @@
+A. Statistics: Single stream
+
+1. h264 -> dec -> scale -> enc -> save
+gst-launch-1.0 rtspsrc location=rtsp://admin:123456aA@192.168.1.100/channel latency=300 ! queue ! rtph264depay ! h264parse ! omxh264dec ! videoscale ! 'video/x-raw,width=(int)1920,height=(int)1080' ! omxh265enc ! 'video/x-h265, stream-format=(string)byte-stream' ! h265parse ! qtmux ! filesink location=videos/stream-omxh-h264-h265.mp4 -e [OK]
+
+2. h264 -> dec -> scale -> enc -> save
+gst-launch-1.0 rtspsrc location=rtsp://admin:123456aA@192.168.1.100/channel latency=300 ! queue ! rtph264depay ! h264parse ! avdec_h264 ! videoscale ! 'video/x-raw,width=(int)1920,height=(int)1080' ! x265enc ! 'video/x-h265, stream-format=(string)byte-stream' ! h265parse ! qtmux ! filesink location=videos/stream-avdec-h265.mp4 -e [CANNOT stop stream]
+
+3. h265 -> save
+gst-launch-1.0 rtspsrc location=rtsp://admin:123456aA@192.168.1.101/channel latency=300 ! queue ! rtph265depay ! h265parse ! qtmux ! filesink location=videos/stream-h265-h265-copy.mp4 -e [OK]
+
+4. h265 -> dec -> scale -> enc -> save
+gst-launch-1.0 rtspsrc location=rtsp://admin:123456aA@192.168.1.101/channel latency=300 ! queue ! rtph265depay ! h265parse ! omxh265dec ! videoscale ! 'video/x-raw,width=(int)1920,height=(int)1080' ! omxh265enc ! 'video/x-h265, stream-format=(string)byte-stream' ! h265parse ! qtmux ! filesink location=videos/stream-h265-scale-h265.mp4 -e [OK]
+
+5. h264 -> dec -> enc -> save
+gst-launch-1.0 rtspsrc location=rtsp://admin:123456aA@192.168.1.100/channel latency=300 ! queue ! rtph264depay ! h264parse ! omxh264dec ! omxh265enc ! 'video/x-h265, stream-format=(string)byte-stream' ! h265parse ! qtmux ! filesink location=videos/stream-omxh-h264-h265.mp4 -e [OK]
+
+6. h264 -> down FPS to 10 -> enc -> save
+gst-launch-1.0 rtspsrc location=rtsp://admin:123456aA@192.168.1.100/channel latency=300 ! queue ! rtph264depay ! h264parse ! omxh264dec ! nvvidconv ! videorate ! 'video/x-raw, framerate=10/1' ! omxh265enc ! 'video/x-h265, stream-format=(string)byte-stream' ! h265parse ! qtmux ! filesink location=videos/stream-h264-fps-h265.mp4 -e
+
+
+
+B. Statistics: Multiple stream
+1. 2 streams h264 same -> dec -> scale -> h265 -> save
++ gst-launch-1.0 rtspsrc location=rtsp://admin:123456aA@192.168.1.100/channel latency=300 ! queue ! rtph264depay ! h264parse ! omxh264dec ! videoscale ! 'video/x-raw,width=(int)1920,height=(int)1080' ! omxh265enc ! 'video/x-h265, stream-format=(string)byte-stream' ! h265parse ! qtmux ! filesink location=videos/stream-omxh-h264-h265-1.mp4 -e [OK]
++ gst-launch-1.0 rtspsrc location=rtsp://admin:123456aA@192.168.1.100/channel latency=300 ! queue ! rtph264depay ! h264parse ! omxh264dec ! videoscale ! 'video/x-raw,width=(int)1920,height=(int)1080' ! omxh265enc ! 'video/x-h265, stream-format=(string)byte-stream' ! h265parse ! qtmux ! filesink location=videos/stream-omxh-h264-h265-2.mp4 -e [OK]
+
+2. 2 streams h264 diff -> dec -> scale -> h265 -> save
++ gst-launch-1.0 rtspsrc location=rtsp://admin:123456aA@192.168.1.100/channel latency=300 ! queue ! rtph264depay ! h264parse ! omxh264dec ! videoscale ! 'video/x-raw,width=(int)1920,height=(int)1080' ! omxh265enc ! 'video/x-h265, stream-format=(string)byte-stream' ! h265parse ! qtmux ! filesink location=videos/stream-omxh-h264-h265-1.mp4 -e [OK]
++ gst-launch-1.0 rtspsrc location=rtsp://admin:123456aA@192.168.1.101/channel latency=300 ! queue ! rtph264depay ! h264parse ! omxh264dec ! videoscale ! 'video/x-raw,width=(int)1920,height=(int)1080' ! omxh265enc ! 'video/x-h265, stream-format=(string)byte-stream' ! h265parse ! qtmux ! filesink location=videos/stream-omxh-h264-h265-2.mp4 -e [OK]
+
+3. 4 streams h264 25fps -> dec -> down fps -> h265 -> save
++ gst-launch-1.0 rtspsrc location=rtsp://admin:123456aA@192.168.1.100/channel latency=300 ! queue ! rtph264depay ! h264parse ! omxh264dec ! nvvidconv ! videorate ! 'video/x-raw, framerate=10/1' ! omxh265enc ! 'video/x-h265, stream-format=(string)byte-stream' ! h265parse ! qtmux ! filesink location=videos/stream-h264-fps-h265-1.mp4 -e
++ gst-launch-1.0 rtspsrc location=rtsp://admin:123456aA@192.168.1.100/channel latency=300 ! queue ! rtph264depay ! h264parse ! omxh264dec ! nvvidconv ! videorate ! 'video/x-raw, framerate=10/1' ! omxh265enc ! 'video/x-h265, stream-format=(string)byte-stream' ! h265parse ! qtmux ! filesink location=videos/stream-h264-fps-h265-2.mp4 -e
++ gst-launch-1.0 rtspsrc location=rtsp://admin:123456aA@192.168.1.101/channel latency=300 ! queue ! rtph264depay ! h264parse ! omxh264dec ! nvvidconv ! videorate ! 'video/x-raw, framerate=10/1' ! omxh265enc ! 'video/x-h265, stream-format=(string)byte-stream' ! h265parse ! qtmux ! filesink location=videos/stream-h264-fps-h265-3.mp4 -e
++ gst-launch-1.0 rtspsrc location=rtsp://admin:123456aA@192.168.1.101/channel latency=300 ! queue ! rtph264depay ! h264parse ! omxh264dec ! nvvidconv ! videorate ! 'video/x-raw, framerate=10/1' ! omxh265enc ! 'video/x-h265, stream-format=(string)byte-stream' ! h265parse ! qtmux ! filesink location=videos/stream-h264-fps-h265-4.mp4 -e
+
+4. 4 streams h264 25fps -> dec -> down fps, scale fullhd -> h265 -> save
++ gst-launch-1.0 rtspsrc location=rtsp://admin:123456aA@192.168.1.100/channel latency=300 ! queue ! rtph264depay ! h264parse ! omxh264dec ! nvvidconv ! videorate ! 'video/x-raw,width=(int)1920,height=(int)1080,framerate=10/1' ! omxh265enc ! 'video/x-h265, stream-format=(string)byte-stream' ! h265parse ! qtmux ! filesink location=videos/stream-h264-fps-h265-1.mp4 -e
++ gst-launch-1.0 rtspsrc location=rtsp://admin:123456aA@192.168.1.100/channel latency=300 ! queue ! rtph264depay ! h264parse ! omxh264dec ! nvvidconv ! videorate ! 'video/x-raw,width=(int)1920,height=(int)1080,framerate=10/1' ! omxh265enc ! 'video/x-h265, stream-format=(string)byte-stream' ! h265parse ! qtmux ! filesink location=videos/stream-h264-fps-h265-2.mp4 -e
++ gst-launch-1.0 rtspsrc location=rtsp://admin:123456aA@192.168.1.101/channel latency=300 ! queue ! rtph264depay ! h264parse ! omxh264dec ! nvvidconv ! videorate ! 'video/x-raw,width=(int)1920,height=(int)1080,framerate=10/1' ! omxh265enc ! 'video/x-h265, stream-format=(string)byte-stream' ! h265parse ! qtmux ! filesink location=videos/stream-h264-fps-h265-3.mp4 -e
++ gst-launch-1.0 rtspsrc location=rtsp://admin:123456aA@192.168.1.101/channel latency=300 ! queue ! rtph264depay ! h264parse ! omxh264dec ! nvvidconv ! videorate ! 'video/x-raw,width=(int)1920,height=(int)1080,framerate=10/1' ! omxh265enc ! 'video/x-h265, stream-format=(string)byte-stream' ! h265parse ! qtmux ! filesink location=videos/stream-h264-fps-h265-4.mp4 -e
+
+5. 6 streams h264 25fps -> dec -> down fps, scale fullhd -> h265 -> save
++ gst-launch-1.0 rtspsrc location=rtsp://admin:123456aA@192.168.1.100/channel latency=300 ! queue ! rtph264depay ! h264parse ! omxh264dec ! nvvidconv ! videorate ! 'video/x-raw,width=(int)1920,height=(int)1080,framerate=10/1' ! omxh265enc ! 'video/x-h265, stream-format=(string)byte-stream' ! h265parse ! qtmux ! filesink location=videos/stream-h264-fps-h265-1.mp4 -e
++ gst-launch-1.0 rtspsrc location=rtsp://admin:123456aA@192.168.1.100/channel latency=300 ! queue ! rtph264depay ! h264parse ! omxh264dec ! nvvidconv ! videorate ! 'video/x-raw,width=(int)1920,height=(int)1080,framerate=10/1' ! omxh265enc ! 'video/x-h265, stream-format=(string)byte-stream' ! h265parse ! qtmux ! filesink location=videos/stream-h264-fps-h265-2.mp4 -e
++ gst-launch-1.0 rtspsrc location=rtsp://admin:123456aA@192.168.1.100/channel latency=300 ! queue ! rtph264depay ! h264parse ! omxh264dec ! nvvidconv ! videorate ! 'video/x-raw,width=(int)1920,height=(int)1080,framerate=10/1' ! omxh265enc ! 'video/x-h265, stream-format=(string)byte-stream' ! h265parse ! qtmux ! filesink location=videos/stream-h264-fps-h265-3.mp4 -e
++ gst-launch-1.0 rtspsrc location=rtsp://admin:123456aA@192.168.1.101/channel latency=300 ! queue ! rtph264depay ! h264parse ! omxh264dec ! nvvidconv ! videorate ! 'video/x-raw,width=(int)1920,height=(int)1080,framerate=10/1' ! omxh265enc ! 'video/x-h265, stream-format=(string)byte-stream' ! h265parse ! qtmux ! filesink location=videos/stream-h264-fps-h265-4.mp4 -e
++ gst-launch-1.0 rtspsrc location=rtsp://admin:123456aA@192.168.1.101/channel latency=300 ! queue ! rtph264depay ! h264parse ! omxh264dec ! nvvidconv ! videorate ! 'video/x-raw,width=(int)1920,height=(int)1080,framerate=10/1' ! omxh265enc ! 'video/x-h265, stream-format=(string)byte-stream' ! h265parse ! qtmux ! filesink location=videos/stream-h264-fps-h265-5.mp4 -e
++ gst-launch-1.0 rtspsrc location=rtsp://admin:123456aA@192.168.1.101/channel latency=300 ! queue ! rtph264depay ! h264parse ! omxh264dec ! nvvidconv ! videorate ! 'video/x-raw,width=(int)1920,height=(int)1080,framerate=10/1' ! omxh265enc ! 'video/x-h265, stream-format=(string)byte-stream' ! h265parse ! qtmux ! filesink location=videos/stream-h264-fps-h265-6.mp4 -e
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

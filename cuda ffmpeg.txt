@@ -7,6 +7,10 @@ gst-launch-1.0 rtspsrc location=rtsp://admin:abcd1234@10.124.70.76/channel1 late
 
 ffmpeg -i rtsp://wowzaec2demo.streamlock.net/vod/mp4:BigBuckBunny_115k.mov -c:a copy -c:v libx265 -t 0:2:0 videos/stream-1.mp4
 ffmpeg -i rtsp://wowzaec2demo.streamlock.net/vod/mp4:BigBuckBunny_115k.mov -c:a copy -c:v copy -t 0:2:0 videos/stream-1.mp4
-ffmpeg -i -hwaccel cuvid rtsp://wowzaec2demo.streamlock.net/vod/mp4:BigBuckBunny_115k.mov -c:a copy -c:v h265_nvenc -t 0:2:0 videos/stream-1.mp4
+ffmpeg -y -vsync 0 -hwaccel cuda -i rtsp://wowzaec2demo.streamlock.net/vod/mp4:BigBuckBunny_115k.mov -c:a copy -c:v h265_nvenc -t 0:2:0 videos/stream-1.mp4
+ffmpeg -y -vsync 0 -hwaccel cuda -i rtsp://wowzaec2demo.streamlock.net/vod/mp4:BigBuckBunny_115k.mov -c:a copy -c:v libx265 -t 0:2:0 videos/stream-1.mp4
+ffmpeg -y -vsync 0 -hwaccel cuda -i rtsp://wowzaec2demo.streamlock.net/vod/mp4:BigBuckBunny_115k.mov -c:a copy -c:v h264_nvenc -t 0:2:0 videos/stream-1.mp4
+ffmpeg -y -vsync 0 -hwaccel cuda -i rtsp://wowzaec2demo.streamlock.net/vod/mp4:BigBuckBunny_115k.mov -c:a copy -c:v hevc_nvenc -t 0:2:0 videos/stream-1.mp4
+ffmpeg -y -vsync 0 -hwaccel cuda -i rtsp://admin:abcd1234@10.124.70.76/channel1 -c:a copy -c:v hevc_nvenc -t 0:2:0 videos/stream-1.mp4 
 
 																																																																																																																																																																																																																					
