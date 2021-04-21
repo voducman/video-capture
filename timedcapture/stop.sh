@@ -1,0 +1,1 @@
+screen -S $(screen -list | grep -oP "\s+(\d+)\.timedcapture" | grep -oP "(\d+)") -X stuff $'\cc'
