@@ -1,0 +1,9 @@
+logs
+.idea
+*.pyc
+*.log
+nohup.out
+config_test.json
+*.mkv
+*.mp4
+*.avi

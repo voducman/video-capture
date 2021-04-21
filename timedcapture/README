@@ -1,0 +1,42 @@
+A simple video recorder - using ffmpeg, vlc or live555
+
+Requirements:
++ Software: ffmpeg, Gstreamer
+sudo apt install ffmpeg
+sudo add-apt-repository universe
+sudo add-apt-repository multiverse
+sudo apt-get update
+sudo apt-get install gstreamer1.0-tools gstreamer1.0-alsa \
+  gstreamer1.0-plugins-base gstreamer1.0-plugins-good \
+  gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly \
+  gstreamer1.0-libav
+sudo apt-get install libgstreamer1.0-dev \
+  libgstreamer-plugins-base1.0-dev \
+  libgstreamer-plugins-good1.0-dev \
+  libgstreamer-plugins-bad1.0-dev
+  
+
++ Library: ffmpeg-python
+pip install ffmpeg-python
+
+
+Configuration file explanation:
+
+Global settings for all cameras:
++ all configs in config.json is required. Do not delete any things from config.json file.
+
+The separate configuration for each camera:
+    {
+        "id": "7",
+        "url": "rtsp://admin:123456a@@10.208.209.63/",   
+        "fps": 6
+    }
+
+
+*** Mandatory params:
++ id: the id of camera ( camera_id in database or an user-defined string)
++ url: url of stream (if enable_database is set, don't need to fill this field)
++ fps: fps of video after record (positive)
+
+
+

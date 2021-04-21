@@ -1,0 +1,51 @@
+{
+  "redis_host": "10.124.64.120",
+  "redis_port": 6379,
+  "redis_pass": "",
+
+  "minio_endpoint_url": "http://210.211.99.8:9000",
+  "minio_access_key_id": "BIGDATA",
+  "minio_secret_key": "KLFDSAJKFJEWOkhjfkdashfkjafiowe",
+  "minio_signature_version": "s3v4",
+  "minio_region_name": "ap-southeast-1",   
+  "minio_bucket": "vinmart",
+  "minio_prefix_path": "uploads",
+
+  "folder": "/home/manvd1/workplace/video-capture/timedcapture/videos/",
+  "container": "auto",
+  "duration": 300,
+  "width": 1920,
+  "height": 1080,
+  "camera_info_list": [
+    {
+      "id": "1",
+      "url": "rtsp://admin:123456aA@10.124.69.76/channel",
+      "fps": 10
+    },
+    {
+      "id": "2",
+      "url": "rtsp://admin:123456aA@10.124.69.76/channel",
+      "fps": 10
+    },
+    {
+      "id": "3",
+      "url": "rtsp://admin:123456aA@10.124.69.76/channel",
+      "fps": 10
+    },
+    {
+      "id": "4",
+      "url": "rtsp://admin:123456aA@10.124.69.77/channel",
+      "fps": 10
+    },
+    {
+      "id": "5",
+      "url": "rtsp://admin:123456aA@10.124.69.77/channel",
+      "fps": 10
+    },
+    {
+      "id": "6",
+      "url": "rtsp://admin:123456aA@10.124.69.77/channel",
+      "fps": 10
+    }
+  ]
+}
